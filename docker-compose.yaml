@@ -1,0 +1,59 @@
+version: '3.7'
+services:
+
+    app:
+      build:
+        context: ./app
+      ports:
+        - "3000:3000"
+      networks:
+        - app-network
+
+    server:
+      build:
+        context: ./server/
+      restart: unless-stopped
+      environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_USER: ${DB_USERNAME}
+      ports:
+        - 8000:80
+      networks:
+        - app-network
+        - db
+      depends_on:
+        - appdb
+
+    appdb:
+      image: mysql:5.7
+      restart: unless-stopped
+      command: --init-file /data/application/init.sql
+      environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      volumes:
+        - ./initdb/init.sql:/data/application/init.sql
+      ports:
+        - 3306:3306
+      networks:
+        - db
+
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      restart: unless-stopped
+      environment:
+        PMA_HOST: appdb
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      depends_on:
+        - appdb
+      ports:
+        - 8080:80
+      networks:
+        - db
+
+networks:
+  app-network:
+    driver: bridge
+  db:
