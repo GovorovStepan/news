@@ -12,8 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:absorb')->cron('*/1 * * * *')-> appendOutputTo (storage_path().'/logs/laravel_output.log');;
-        $schedule->command('inspire')->cron('*/1 * * * *')-> appendOutputTo (storage_path().'/logs/laravel_output.log');;;
+        $schedule->command('app:absorb')->cron('*/1 * * * *');
+        $schedule->command('inspire')->cron('*/1 * * * *')-> appendOutputTo (storage_path().'/logs/laravel_output.log');
     }
 
     /**

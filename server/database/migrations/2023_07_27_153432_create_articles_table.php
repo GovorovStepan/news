@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title');
-            $table->string('text');
+            $table->string('title')->nullable();
+            $table->string('author')->nullable();
+            $table->longText('text')->nullable();
+            $table->timestamp('publishedAt')->nullable();
             $table->unsignedBigInteger('source_id');
             $table->unsignedBigInteger('topic_id');
             $table->foreign('source_id')->references('id')->on('sources');

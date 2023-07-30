@@ -3,6 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Factory\ArticleSourceFactory;
+use App\Models\Article;
+use App\Models\Source;
+use App\Models\Topic;
+use PHPHtmlParser\Dom;
 
 class Absorb extends Command
 {
@@ -25,7 +30,15 @@ class Absorb extends Command
      */
     public function handle()
     {
-        $this->line('==================');
+        $sources = config('sources');
+        foreach ($sources as $type => $data) {
+          $source = ArticleSourceFactory::create($type, $data['url']);
+          $source->setParser(new Dom);
+          $source->setSourceModel(new Source());
+          $source->setTopicModel(new Topic());
+          $source->setArticleModel(new Article());
+          $source->addArticles($data['params']);
+        }
 
     }
 }
