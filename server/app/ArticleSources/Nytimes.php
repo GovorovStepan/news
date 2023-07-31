@@ -51,12 +51,8 @@ class Nytimes extends ArticleSourceAbstarct
 
   protected function parse_article_page($url)
   {
-    $text = '';
     $this->parser->loadFromUrl($url);
-    $contents = $this->parser->find('section[name="articleBody"] p');
-    foreach ($contents as $el) {
-      $text .=  strip_tags($el->innerHtml)  . PHP_EOL;
-    }
-    return $text;
+    $maincontent = $this->parser->find('section[name="articleBody"]');
+    return strip_tags($maincontent->innerHtml , '<a>');
   }
 }
