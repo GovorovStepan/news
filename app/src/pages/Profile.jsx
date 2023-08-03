@@ -2,11 +2,13 @@ import React from "react";
 import { useAuth } from "../data/hooks/useAuth";
 import { Col, Row, Card } from 'antd';
 import Preferences from "../components/Preferences";
+import sources from "../data/models/sources";
+import topics from "../data/models/topics";
+import preferences from "../data/models/preferences";
 
 
 function Profile() {
   const { user } = useAuth();
-  console.log(user)
   return (
     <React.Fragment>
       <Row style={{ marginTop: 20, marginBottom: 40 }}>
@@ -25,7 +27,11 @@ function Profile() {
         <Col xs={2} md={6} lg={8}>
         </Col>
         <Col xs={20} md={12} lg={8}>
-          <Preferences title="Topics Preferences" />
+          <Preferences
+            title="Topics Preferences"
+            optionsGetter={topics.list}
+            preferencesGetter={preferences.topics}
+            type='topics' />
         </Col>
         <Col xs={2} md={6} lg={8}></Col>
       </Row>
@@ -33,7 +39,11 @@ function Profile() {
         <Col xs={2} md={6} lg={8}>
         </Col>
         <Col xs={20} md={12} lg={8}>
-          <Preferences title="Sources Preferences" />
+          <Preferences
+            title="Sources Preferences"
+            optionsGetter={sources.list}
+            preferencesGetter={preferences.sources}
+            type='sources' />
         </Col>
         <Col xs={2} md={6} lg={8}></Col>
       </Row>

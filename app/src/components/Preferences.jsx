@@ -1,34 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../data/hooks/useAuth";
-import { Card, Select } from 'antd';
+import { Card, Select, notification, Spin, Button, Space } from 'antd';
+import preferences from "../data/models/preferences";
 
 
 function Preferences(props) {
   const { user } = useAuth();
-  const options = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
+  const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(true);
+  const [options, setOptions] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    props.optionsGetter(onSuccsessGetOptions, onError);
+    props.preferencesGetter(onSuccsessGetPreferences, onError);
+  }, []);
+
+
+  const onError = (error) => {
+    console.log(error);
+    api.error({
+      message: 'Error',
+      description: error.message,
     });
+    setLoading(false);
   }
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+
+  const onSuccsessGetOptions = (response) => {
+    setOptions(response.data.map((el) => {
+      return { value: el.id, label: el.name }
+    }));
+  }
+
+  const onSuccsessGetPreferences = (response) => {
+    setSelectedItems(response.data)
+    setLoading(false)
+  }
+  const onSuccsessSetPreferences = (response) => {
+    setLoading(false)
+    api.success({
+      message: 'Success'
+    });
+    setLoading(false);
+  }
+
+  const onSubmitClick = () => {
+    setLoading(true)
+    preferences.set({'ids' : selectedItems, 'type': props.type}, onSuccsessSetPreferences, onError)
+  }
+
   return (
-    <Card title={props.title}  >
-      <Select
-        mode="multiple"
-        allowClear
-        style={{
+    <Spin spinning={loading} size="large">
+      <Card title={props.title}  >
+        {contextHolder}
+        <Space direction="vertical" style={{
           width: '100%',
-        }}
-        placeholder="Please select"
-        defaultValue={['a10', 'c12']}
-        onChange={handleChange}
-        options={options}
-      />
-    </Card>
+        }}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{
+              width: '100%',
+            }}
+            placeholder="Please select"
+            value={selectedItems}
+            onChange={setSelectedItems}
+            options={options}
+          />
+          <Button type="primary" onClick={onSubmitClick}>Submit</Button>
+
+        </Space>
+      </Card>
+    </Spin>
   );
 };
 

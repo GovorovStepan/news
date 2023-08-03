@@ -16,8 +16,10 @@ function Login() {
   };
 
   const onSuccsess = (response) => {
-    console.log(response);
     setLoading(false)
+    api.success({
+      message: 'Success'
+    });
     login(response.data.user);
   }
   const onError = (error) => {

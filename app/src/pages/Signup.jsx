@@ -14,14 +14,15 @@ function Signup() {
   const { login } = useAuth();
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     setLoading(true);
     user.registrate(values, onSuccsess, onError)
   };
 
   const onSuccsess = (response) => {
-    console.log(response);
     setLoading(false)
+    api.success({
+      message: 'Success'
+    });
     login(response.data.user);
   }
   const onError = (error) => {
