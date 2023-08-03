@@ -11,55 +11,59 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-      public function register(RegisterRequest $request) {
+  public function register(RegisterRequest $request)
+  {
 
-        $data = $request->validated();
+    $data = $request->validated();
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+    $user = User::create([
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'password' => Hash::make($data['password']),
+    ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+    $token = $user->createToken('auth_token')->plainTextToken;
 
-        $cookie = cookie('token', $token, 60 * 24); // 1 day
+    $cookie = cookie('token', $token, 60 * 24); // 1 day
 
-        return response()->json([
-            'user' => new UserResource($user),
-        ])->withCookie($cookie);
+    return response()->json([
+      'user' => new UserResource($user),
+    ])->withCookie($cookie);
+  }
+
+  public function login(LoginRequest $request)
+  {
+    $data = $request->validated();
+
+    $user = User::where('email', $data['email'])->first();
+
+    if (!$user || !Hash::check($data['password'], $user->password)) {
+      return response()->json([
+        'message' => 'Email or password is incorrect!'
+      ], 401);
     }
 
-    public function login(LoginRequest $request) {
-        $data = $request->validated();
+    $token = $user->createToken('auth_token')->plainTextToken;
 
-        $user = User::where('email', $data['email'])->first();
+    $cookie = cookie('token', $token, 60 * 24); // 1 day
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Email or password is incorrect!'
-            ], 401);
-        }
+    return response()->json([
+      'user' => new UserResource($user),
+    ])->withCookie($cookie);
+  }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+  public function logout(Request $request)
+  {
+    $request->user()->currentAccessToken()->delete();
 
-        $cookie = cookie('token', $token, 60 * 24); // 1 day
+    $cookie = cookie()->forget('token');
 
-        return response()->json([
-            'user' => new UserResource($user),
-        ])->withCookie($cookie);
-    }
-
-    public function logout(Request $request) {
-        $request->user()->currentAccessToken()->delete();
-
-        $cookie = cookie()->forget('token');
-
-        return response()->json([
-            'message' => 'Logged out successfully!'
-        ])->withCookie($cookie);
-    }
-    public function user(Request $request) {
-        return new UserResource($request->user());
-    }
+    return response()->json([
+      'message' => 'Logged out successfully!'
+    ])->withCookie($cookie);
+  }
+  public function user(Request $request)
+  {
+    return new UserResource($request->user());
+  }
 }

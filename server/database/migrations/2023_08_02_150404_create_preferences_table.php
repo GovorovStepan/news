@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('preferences_sources', function (Blueprint $table) {
+        Schema::create('preferences', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('source_id');
+            $table->json('topics_id')->nullable();
+            $table->json('sources_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('source_id')->references('id')->on('sources');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('preferences_sources');
+        Schema::dropIfExists('preferences');
     }
 };

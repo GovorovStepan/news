@@ -1,19 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PreferencesController;
+use App\Http\Controllers\SourcesController;
+use App\Http\Controllers\TopicsController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -21,5 +12,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);
   Route::get('/user', [AuthController::class, 'user']);
-});
 
+  Route::get('/sources', [SourcesController::class, 'list']);
+
+  Route::get('/topics', [TopicsController::class, 'list']);
+
+
+  // Route::get('/preferences', [PreferencesController::class, '']);
+  Route::post('/preferences/set', [PreferencesController::class, 'set']);
+
+  Route::get('/preferences/topics', [PreferencesController::class, 'topics']);
+
+  Route::get('/preferences/sources', [PreferencesController::class, 'sources']);
+});
