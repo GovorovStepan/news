@@ -64,6 +64,9 @@ WORKDIR /var/www/html
 COPY ./ ./
 RUN composer install
 
+RUN php /var/www/html/artisan migrate
+RUN php /var/www/html/artisan app:absorb
+
 
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 775 /var/www/html
@@ -79,8 +82,6 @@ RUN apt-get clean \
 # run apache
 CMD ["apache2-foreground"]
 EXPOSE 80
-
-RUN php artisan migrate
 
 
 
