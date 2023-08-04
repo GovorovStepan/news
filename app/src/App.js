@@ -15,6 +15,8 @@ import ArticleList from './pages/Articles/ArticleList';
 import ProtectedLayout from './components/ProtectedLayout';
 import HomeLayout from './components/HomeLayout';
 import AuthLayout from './components/AuthLayout';
+import Feed from './pages/Articles/Feed';
+import Article from './pages/Articles/Article';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +34,9 @@ const router = createBrowserRouter(
 
         <Route path="/news" element={<ProtectedLayout />}>
           <Route path="" element={<ArticleList />} />
+          <Route path="feed" element={<Feed />} />
           <Route path="profile" element={<Profile />} />
+          <Route path=":id" element={<Article />} />
         </Route>
       </Route>
     </React.Fragment>

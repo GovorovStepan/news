@@ -27,11 +27,11 @@ class Nytimes extends ArticleSourceAbstarct
     $this->request($params);
 
     foreach ($this->article_list['response']['docs'] as $article) {
-      $article_params = $this->format($article);
       try{
+        $article_params = $this->format($article);
         $this->article_model->updateOrCreate(['title' => $article_params['title'], 'source_id' => $article_params['source_id']], $article_params);
       } catch(Exception $e){
-        Log::error($e);
+        Log::error($e->getMessage());
         continue;
       }
     }
@@ -51,8 +51,13 @@ class Nytimes extends ArticleSourceAbstarct
 
   protected function parse_article_page($url)
   {
+    $text = '';
     $this->parser->loadFromUrl($url);
-    $maincontent = $this->parser->find('section[name="articleBody"]');
-    return strip_tags($maincontent->innerHtml , '<a>');
+    $maincontent = $this->parser->find('section[name="articleBody"] p');
+    foreach($maincontent as $p){
+      $text .= strip_tags($p->innerHtml);
+      $text .= ' \n\n ';
+    }
+    return htmlspecialchars_decode($text);
   }
 }

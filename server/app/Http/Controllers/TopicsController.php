@@ -14,4 +14,9 @@ class TopicsController extends Controller
 
       return response()->json($topics);
     }
+
+    public function get($id){
+      $source = Topic::where('id', $id)->first();
+      return response()->json($source);
+    }
 }

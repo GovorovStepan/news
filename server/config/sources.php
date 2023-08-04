@@ -15,19 +15,19 @@ return [
       'q' => 'bitcoin'
     ],
   ],
-  // 'guardian'=> [
-  //   'url' => 'https://content.guardianapis.com/search',
-  //   'params' => [
-  //     'api-key' => 'd4ec7dbb-bde4-4d81-a152-7d9ed6603ac8',
-  //     'type'=>'article'
-  //   ],
-  // ],
-  // 'nytimes'=> [
-  //   'url' => 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
-  //   'params' => [
-  //     'api-key' => 'xMfatuR3a6yT5BmX5NWc9yHZiYSNYD5N',
-  //     'facet' => 'false'
-  //   ],
-  // ]
+  'guardian'=> [
+    'url' => 'https://content.guardianapis.com/search',
+    'params' => [
+      'api-key' => 'd4ec7dbb-bde4-4d81-a152-7d9ed6603ac8',
+      'type'=>'article'
+    ],
+  ],
+  'nytimes'=> [
+    'url' => 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
+    'params' => [
+      'api-key' => 'xMfatuR3a6yT5BmX5NWc9yHZiYSNYD5N',
+      'facet' => 'false'
+    ],
+  ]
 
 ];

@@ -13,4 +13,9 @@ class SourcesController extends Controller
 
     return response()->json($sources);
   }
+  
+  public function get($id){
+    $source = Source::where('id', $id)->first();
+    return response()->json($source);
+  }
 }

@@ -21,16 +21,17 @@ function ProtectedLayout() {
   return (
     <React.Fragment>
       <Row style={{ marginTop: 20, marginBottom: 40 }}>
-        <Col xs={2} md={6} lg={8}>
+        <Col xs={2} md={4} lg={6}>
         </Col>
-        <Col xs={20} md={12} lg={8}>
+        <Col xs={20} md={16} lg={12}>
           <nav>
             <Link to="/news">Articles</Link>
+            <Link to="feed">Feed</Link>
             <Link to="profile">Profile</Link>
             <Button type="link" onClick={onExitClick}>Exit</Button>
           </nav>
         </Col>
-        <Col xs={2} md={6} lg={8}></Col>
+        <Col xs={2} md={4} lg={6}></Col>
       </Row>
       {outlet}
     </React.Fragment>

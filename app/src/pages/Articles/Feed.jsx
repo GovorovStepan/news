@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { default as articlesModel } from "../../data/models/articles";
 import { notification, Spin, Col, Row, Pagination } from 'antd';
-import ArticleFilter from "../../components/ArticleFilter";
 import ArticlePreview from "../../components/ArticlePreview";
 import topics from "../../data/models/topics";
 import sources from "../../data/models/sources";
 
-function ArticleList() {
+function Feed() {
   const [articles, setArticles] = useState({});
   const [sourceOptions, setSourceOptions] = useState([]);
   const [topicOptions, setTopicOptions] = useState([]);
@@ -15,27 +14,23 @@ function ArticleList() {
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useState({ "page": 1});
 
   useEffect(() => {
     topics.list(onSuccsessGetTopics, onError);
     sources.list(onSuccsessGetSources, onError);
+    articlesModel.feed(page, onSuccsessGetArticles, onError);
 
   }, []);
 
   useEffect(() => {
     setLoading(true);
-    if (!Object.keys(articles).length) {
-      articlesModel.search(searchParams, onSuccsessSearch, onError);
+    if (page in articles) {
+      setRenderArticles(articles[page]);
+      setLoading(false);
     } else {
-      if (page in articles) {
-        setRenderArticles(articles[page]);
-        setLoading(false);
-      } else {
-        articlesModel.search(searchParams, onSuccsessPaginate, onError);
-      }
+      articlesModel.feed(page, onSuccsessPaginate, onError);
     }
-  }, [searchParams]);
+  }, [page]);
 
 
   const onSuccsessGetTopics = (response) => {
@@ -50,6 +45,7 @@ function ArticleList() {
   }
 
   const onError = (error) => {
+    console.error(error);
     api.error({
       message: 'Error',
       description: error.message,
@@ -57,34 +53,21 @@ function ArticleList() {
     setLoading(false);
   }
 
-  const onSuccsessSearch = (response) => {
-    setArticles(articles => ({ ...articles, [page]: response.data.data }))
-    setRenderArticles(response.data.data)
-    setTotal(response.data.total)
-    setLoading(false)
-  }
   const onSuccsessPaginate = (response) => {
     setArticles(articles => ({ ...articles, [page]: response.data.data }))
     setRenderArticles(response.data.data)
     setLoading(false)
   }
 
-  const handleSearch = (value) => {
-    setArticles({})
-    setPage(1)
-    setSearchParams({
-      ...searchParams,
-      filters: value,
-      page: 1
-    })
+  const onSuccsessGetArticles = (response) => {
+    setArticles(articles => ({ ...articles, [page]: response.data.data }))
+    setRenderArticles(response.data.data)
+    setTotal(response.data.total)
+    setLoading(false)
   }
 
   const handlePaginate = (value) => {
     setPage(value);
-    setSearchParams({
-      ...searchParams,
-      page: value
-    })
   }
 
   const getTopicName = (id) => {
@@ -103,13 +86,11 @@ function ArticleList() {
           <Col xs={2} md={4} lg={6}>
           </Col>
           <Col xs={20} md={16} lg={12}>
-            <ArticleFilter onSearch={handleSearch} sourceOptions={sourceOptions} topicOptions={topicOptions} />
             <div>
               {
                 renderArticles.map(el => {
                   return <ArticlePreview
                     key={el.id}
-                    id={el.id}
                     title={el.title}
                     topic={getTopicName(el.topic_id)}
                     source={getSourceName(el.source_id)}
@@ -137,4 +118,4 @@ function ArticleList() {
 };
 
 
-export default ArticleList
+export default Feed

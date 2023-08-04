@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../data/hooks/useAuth";
 import { Card, Select, notification, Spin, Button, Space } from 'antd';
 import preferences from "../data/models/preferences";
 
 
 function Preferences(props) {
-  const { user } = useAuth();
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState([]);
@@ -18,7 +16,7 @@ function Preferences(props) {
 
 
   const onError = (error) => {
-    console.log(error);
+    console.error(error);
     api.error({
       message: 'Error',
       description: error.message,
@@ -66,6 +64,9 @@ function Preferences(props) {
             value={selectedItems}
             onChange={setSelectedItems}
             options={options}
+            filterOption={(input, option) =>
+              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+            }
           />
           <Button type="primary" onClick={onSubmitClick}>Submit</Button>
 

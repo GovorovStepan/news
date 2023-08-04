@@ -26,7 +26,7 @@ function Signup() {
     login(response.data.user);
   }
   const onError = (error) => {
-    console.log(error);
+    console.error(error);
     api.error({
       message: 'Error',
       description: error.message,

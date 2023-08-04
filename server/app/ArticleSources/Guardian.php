@@ -15,7 +15,7 @@ class Guardian extends ArticleSourceAbstarct
       'title' => $article['webTitle'],
       'text' => $this->parse_article_page($article['webUrl']),
       'source_id' => $this->source_model->firstOrCreate(['name' => 'The Guardian'])->id,
-      'topic_id' => $this->topic_model->firstOrCreate(['name' => $article['pillarName']])->id,
+      'topic_id' => $this->topic_model->firstOrCreate(['name' => $article['pillarName'] ])->id,
       'publishedAt' => date('Y-m-d H:i:s', strtotime($article['webPublicationDate']))
     ];
     return $res;
@@ -24,11 +24,11 @@ class Guardian extends ArticleSourceAbstarct
   {
     $this->request($params);
     foreach ($this->article_list['response']['results'] as $article) {
-      $article_params = $this->format($article);
       try {
+        $article_params = $this->format($article);
         $this->article_model->updateOrCreate(['title' => $article_params['title'], 'source_id' => $article_params['source_id']], $article_params);
       } catch (Exception $e) {
-        Log::error($e);
+        Log::error($e->getMessage());
         continue;
       }
     }
@@ -47,8 +47,13 @@ class Guardian extends ArticleSourceAbstarct
 
   protected function parse_article_page($url)
   {
+    $text = '';
     $this->parser->loadFromUrl($url);
-    $maincontent = $this->parser->find('div #maincontent');
-    return strip_tags($maincontent->innerHtml , '<a>');
+    $maincontent = $this->parser->find('div #maincontent p');
+    foreach($maincontent as $p){
+      $text .= strip_tags($p->innerHtml);
+      $text .= ' \n\n ';
+    }
+    return htmlspecialchars_decode($text);
   }
 }

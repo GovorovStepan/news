@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\SourcesController;
@@ -14,14 +15,22 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('/user', [AuthController::class, 'user']);
 
   Route::get('/sources', [SourcesController::class, 'list']);
+  Route::get('/sources/{id}', [SourcesController::class, 'get']);
 
   Route::get('/topics', [TopicsController::class, 'list']);
+  Route::get('/topics/{id}', [TopicsController::class, 'get']);
 
 
-  // Route::get('/preferences', [PreferencesController::class, '']);
   Route::post('/preferences/set', [PreferencesController::class, 'set']);
 
   Route::get('/preferences/topics', [PreferencesController::class, 'topics']);
 
   Route::get('/preferences/sources', [PreferencesController::class, 'sources']);
+
+
+  Route::post('/articles', [ArticlesController::class, 'search']);
+  Route::get('/articles/{id}', [ArticlesController::class, 'get']);
+  Route::post('/feed', [ArticlesController::class, 'feed']);
+
+
 });

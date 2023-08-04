@@ -47,7 +47,7 @@ class User {
 
       })
       .catch(function (error) {
-        console.log(error)
+        console.error(error)
       });
 
   }
@@ -65,7 +65,7 @@ class User {
         succsess_callback(response.data.data)
       })
       .catch(function (error) {
-        console.log(error)
+        console.error(error)
         error_callback();
       });
   }

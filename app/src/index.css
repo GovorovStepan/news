@@ -12,7 +12,32 @@ code {
     monospace;
 }
 
-nav{
+nav {
   display: flex;
   justify-content: space-between;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+  line-height: calc(1ex / 0.42);
+  margin: calc(1ex / 0.42) 0;
+}
+
+article {
+  line-height: calc(1ex / 0.32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+p {
+  width: 120ch;
+  max-width: 100%;
+  text-align: justify;
+  hyphens: auto;
+  font-size: 1.5em;
+  line-height: calc(1ex / 0.32);
+  margin: calc(1ex / 0.32) 0;
 }
