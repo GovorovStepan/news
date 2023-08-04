@@ -12,7 +12,7 @@ function Article() {
   const [paragraphs, setParagraphs] = useState([]);
   const [topicName, setTopicName] = useState('');
   const [sourceName, setSourceName] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [api, contextHolder] = notification.useNotification();
   const { id } = useParams();
 
@@ -20,6 +20,13 @@ function Article() {
     articles.get_by_id(id, onSuccsess, onError);
 
   }, []);
+  
+  useEffect(() => {
+    if(topicName && sourceName){
+      setLoading(false);
+    }
+  }, [topicName, sourceName]);
+  
 
   const onSuccsess = (response) => {
     setArticle(response.data);
@@ -61,9 +68,7 @@ function Article() {
             <br />
             <article >
               {paragraphs.map(el => {
-                  return <p>
-                    {el}
-                  </p>
+                  return <p>{el}</p>
                 })}
             </article >
             <br />

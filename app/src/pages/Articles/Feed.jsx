@@ -91,12 +91,13 @@ function Feed() {
                 renderArticles.map(el => {
                   return <ArticlePreview
                     key={el.id}
+                    id={el.id}
                     title={el.title}
                     topic={getTopicName(el.topic_id)}
                     source={getSourceName(el.source_id)}
                     pub_date={el.publishedAt}
                   >
-                    {el.text}
+                    {el.text.slice(0,150).replace('\\n\\n', '')}
                   </ArticlePreview>
                 })
               }

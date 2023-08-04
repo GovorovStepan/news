@@ -1,8 +1,9 @@
 import React from "react";
-import { Card, Space, Tag } from 'antd';
-import { Link } from "react-router-dom";
+import { Button, Card, Space, Tag } from 'antd';
+import { useNavigate } from "react-router-dom";
 
 function ArticlePreview(props) {
+  const navigate = useNavigate();
   return (
     <React.Fragment>
           <Card 
@@ -10,7 +11,7 @@ function ArticlePreview(props) {
           extra={<Space><Tag color="volcano">{props.topic}</Tag> <Tag color="geekblue">{props.source}</Tag></Space>}
           actions={[
             <span key="pub_date">{props.pub_date}</span>,
-            <Link to={'/news/'+props.id}> Read</Link>,
+            <Button type="link" onClick={() => navigate('/news/'+ props.id)}> Read</Button>,
           ]}
           >
             <p style={{textOverflow: 'ellipsis', overflow: 'hidden', textWrap: "nowrap" }}>

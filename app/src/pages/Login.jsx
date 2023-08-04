@@ -3,6 +3,7 @@ import { Col, Row, Button, Form, Input, Space, notification, Spin } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import user from "../data/models/user";
 import { useAuth } from "../data/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [api, contextHolder] = notification.useNotification();
@@ -81,7 +82,7 @@ function Login() {
                   <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                   </Button>
-                  Or <a href="">register now!</a>
+                  Or <Link to='/signup'>register now!</Link>
                 </Space>
               </Form.Item>
             </Form>

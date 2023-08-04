@@ -115,7 +115,7 @@ function ArticleList() {
                     source={getSourceName(el.source_id)}
                     pub_date={el.publishedAt}
                   >
-                    {el.text}
+                    {el.text.slice(0,150).replace('\\n\\n', '')}
                   </ArticlePreview>
                 })
               }

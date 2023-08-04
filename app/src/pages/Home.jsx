@@ -1,25 +1,22 @@
 import React from "react";
 import { useAuth } from "../data/hooks/useAuth";
+import { Button, Col, Row, Space } from 'antd';
+import { Link } from "react-router-dom";
 
 function Home() {
   const { user } = useAuth();
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-8">
-        <div className="card">
-          <div className="card-header">Laravel React Auth</div>
-          <div className="card-body">
-            {
-              user && (
-                <>
-                  <p>Signed in</p>
-                  <div>Hi {user.name}</div>
-                </>
-              )
-            }
-          </div>
-        </div>
-      </div>
+    <div style={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)"
+    }}>
+      <h1>Hello!</h1>
+      <Space>
+        <Button type="primary" size="large"><Link to='/login'>Login</Link></Button>
+        <Button size="large"><Link to='/signup'>Sing Up</Link></Button>
+      </Space>
     </div>
   );
 };
