@@ -44,7 +44,7 @@ class Nytimes extends ArticleSourceAbstarct
   public function createQuery(array $params): array
   {
 
-    $params['begin_date'] = date('Ymd');
+    $params['begin_date'] = date('Ymd', strtotime('yesterday')); 
     $params['page'] = strval($this->page);
     return $params;
   }

@@ -59,17 +59,17 @@ RUN printenv >> /etc/environment \
     && sed -i '/^exec/ s/$/ | \/etc\/init.d\/cron start/' /usr/local/bin/apache2-foreground
 
 
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 WORKDIR /var/www/html
 COPY ./ ./
 RUN composer install
 
-RUN php /var/www/html/artisan migrate
-RUN php /var/www/html/artisan app:absorb
 
 
 RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 775 /var/www/html
+RUN chmod -R 777 /var/www/html
 
 
 # ************ Clean ************
@@ -77,7 +77,10 @@ RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-source delete
 
-# VOLUME [ "/var/www/html" ]
+# # VOLUME [ "/var/www/html" ]
+# RUN sleep 20
+# RUN php /var/www/html/artisan migrate
+# RUN php /var/www/html/artisan app:absorb
 
 # run apache
 CMD ["apache2-foreground"]

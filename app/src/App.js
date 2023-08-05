@@ -36,7 +36,7 @@ const router = createBrowserRouter(
           <Route path="" element={<ArticleList />} />
           <Route path="feed" element={<Feed />} />
           <Route path="profile" element={<Profile />} />
-          <Route path=":id" element={<Article />} />
+          <Route path="article/:id" element={<Article />} />
         </Route>
       </Route>
     </React.Fragment>

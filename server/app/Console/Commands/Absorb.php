@@ -38,6 +38,8 @@ class Absorb extends Command
         $sources = config('sources');
         foreach ($sources as $type => $data) {
           try{
+            echo 'source start - '.$type;
+            echo PHP_EOL;
             $source = ArticleSourceFactory::create($type, $data['url']);
             $source->setParser(new Dom);
             $source->setSourceModel(new Source());

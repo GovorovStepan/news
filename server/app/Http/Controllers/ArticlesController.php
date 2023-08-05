@@ -58,7 +58,12 @@ class ArticlesController extends Controller
     $user_id = $request->user()->id;
     $model = new Article();
     $preferences = json_decode(Preferences::where('user_id', $user_id)->first());
-    $model = $this->define_filters($model, ['topics' => json_decode($preferences->topics_id), 'sources'=> json_decode($preferences->sources_id)]);
+    $preferences_data = [];
+    if($preferences){
+      if($preferences->topics_id) $preferences_data['topics'] = json_decode($preferences->topics_id);
+      if($preferences->sources_id) $preferences_data['sources'] = json_decode($preferences->sources_id);
+    } 
+    $model = $this->define_filters($model, $preferences_data);
 
     $articles = $model->orderBy('id', 'asc')->paginate($data['pageSize'], ['*'], 'page', $data['page']);
 

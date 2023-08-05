@@ -11,7 +11,7 @@ function ArticlePreview(props) {
           extra={<Space><Tag color="volcano">{props.topic}</Tag> <Tag color="geekblue">{props.source}</Tag></Space>}
           actions={[
             <span key="pub_date">{props.pub_date}</span>,
-            <Button type="link" onClick={() => navigate('/news/'+ props.id)}> Read</Button>,
+            <Button type="link" onClick={() => navigate('/news/article/'+ props.id)}> Read</Button>,
           ]}
           >
             <p style={{textOverflow: 'ellipsis', overflow: 'hidden', textWrap: "nowrap" }}>

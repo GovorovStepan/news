@@ -41,7 +41,7 @@ class Guardian extends ArticleSourceAbstarct
   public function createQuery(array $params): array
   {
     $params['page'] = strval($this->page);
-    $params['from-date'] = date('Y-m-d');
+    $params['from-date'] = date('Y-m-d', strtotime('yesterday'));
     return $params;
   }
 

@@ -34,13 +34,13 @@ class PreferencesController extends Controller
   public function topics(Request $request)
   {
     $user_id = $request->user()->id;
-    $preferences = json_decode(Preferences::where('user_id', $user_id)->first()->topics_id);
-    return response()->json($preferences ? $preferences : []);
+    $preferences = Preferences::where('user_id', $user_id)->first();
+    return response()->json($preferences ? json_decode($preferences->topics_id) : []);
   }
   public function sources(Request $request)
   {
     $user_id = $request->user()->id;
-    $preferences = json_decode(Preferences::where('user_id', $user_id)->first()->sources_id);
-    return response()->json($preferences ? $preferences : []);
+    $preferences = Preferences::where('user_id', $user_id)->first();
+    return response()->json($preferences ? json_decode($preferences->sources_id) : []);
   }
 }
