@@ -17,6 +17,8 @@ Script for absorbation (`app:absorb`) runs every day at 1:00
 
 ````
 
+Open app on http://localhost:3000/
+
 
 
 
